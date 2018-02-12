@@ -50,7 +50,8 @@ function Square(props) {
           }
         ],
         stepNumber: 0,
-        xIsNext: true
+        xIsNext: true,
+        isAscending: true
       };
     }
   
@@ -86,17 +87,30 @@ function Square(props) {
         xIsNext: (step % 2) === 0
       });
     }
+
+    reverseSort() {
+      this.setState({
+        isAscending: !this.state.isAscending
+      });
+    }
   
     render() {
-      const history = this.state.history;
+      let history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
-  
+
+      // Reverse the history list on user input.
+      if (!this.state.isAscending) {
+        history = this.state.history.slice();
+        history.reverse();
+      }
+
       const moves = history.map((step, move) => {
         const desc = step.location;
+        const activeStep = this.state.isAscending ? this.state.stepNumber : (this.state.history.length - 1) - this.state.stepNumber;
 
         // Bold if this is the active step.
-        if (move == this.state.stepNumber) {
+        if (move == activeStep) {
           return (
             <li key={move}>
               <button onClick={() => this.jumpTo(move)}><strong>{desc}</strong></button>
@@ -128,6 +142,7 @@ function Square(props) {
           </div>
           <div className="game-info">
             <div>{status}</div>
+            <div><button onClick={() => this.reverseSort()}>Change History Order</button></div>
             <ol>{moves}</ol>
           </div>
         </div>
