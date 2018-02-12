@@ -49,7 +49,8 @@ function Square(props) {
       this.state = {
         history: [
           {
-            squares: Array(9).fill(null)
+            squares: Array(9).fill(null),
+            location: "Game Started."
           }
         ],
         stepNumber: 0,
@@ -65,10 +66,16 @@ function Square(props) {
         return;
       }
       squares[i] = this.state.xIsNext ? "X" : "O";
+
+      // Store the co-ordinates of the clicked location in a human friendly format (+1).
+      const x = Math.floor(i / 3) + 1;
+      const y = (i % 3) + 1;
+      const clickLocation = squares[i] + ' moved to ('+ x + ',' + y + ')';
       this.setState({
         history: history.concat([
           {
-            squares: squares
+            squares: squares,
+            location: clickLocation
           }
         ]),
         stepNumber: history.length,
@@ -89,9 +96,7 @@ function Square(props) {
       const winner = calculateWinner(current.squares);
   
       const moves = history.map((step, move) => {
-        const desc = move ?
-          'Go to move #' + move :
-          'Go to game start';
+        const desc = step.location;
         return (
           <li key={move}>
             <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -146,5 +151,5 @@ function Square(props) {
     }
     return null;
   }
-    
+
   
