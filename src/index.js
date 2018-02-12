@@ -71,6 +71,7 @@ function Square(props) {
       const x = Math.floor(i / 3) + 1;
       const y = (i % 3) + 1;
       const clickLocation = squares[i] + ' moved to ('+ x + ',' + y + ')';
+
       this.setState({
         history: history.concat([
           {
@@ -97,11 +98,21 @@ function Square(props) {
   
       const moves = history.map((step, move) => {
         const desc = step.location;
-        return (
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}>{desc}</button>
-          </li>
-        );
+
+        // Bold if this is the active step.
+        if (move == this.state.stepNumber) {
+          return (
+            <li key={move}>
+              <button onClick={() => this.jumpTo(move)}><strong>{desc}</strong></button>
+            </li>
+          );
+        } else {
+          return (
+            <li key={move}>
+              <button onClick={() => this.jumpTo(move)}>{desc}</button>
+            </li>
+          );
+        }
       });
   
       let status;
