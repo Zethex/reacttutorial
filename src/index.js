@@ -136,7 +136,11 @@ import './index.css';
   
       let status;
       if (winner) {
-        status = "Winner: " + winner;
+        if (winner == "Draw") {
+          status = "The game is a draw."
+        } else {
+          status = "Winner: " + winner;
+        }
       } else {
         status = "Next player: " + (this.state.xIsNext ? "X" : "O");
       }
@@ -164,7 +168,17 @@ import './index.css';
   
   ReactDOM.render(<Game />, document.getElementById("root"));
   
-  function calculateWinner(squares) {
+  function isBoardFull(squares) {
+    for (let i = 0; i < squares.length; i++) {
+      if (!squares[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  function calculateWinner(squares) {    
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -180,6 +194,9 @@ import './index.css';
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return {playerWinner: squares[a], winningLine: lines[i]};
       }
+    }
+    if (isBoardFull(squares)) {
+      return {playerWinner: "Draw", winningLine: []};
     }
     return {playerWinner: null, winningLine: []};
   }
