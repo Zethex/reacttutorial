@@ -108,18 +108,19 @@ function Square(props) {
       const moves = history.map((step, move) => {
         const desc = step.location;
         const activeStep = this.state.isAscending ? this.state.stepNumber : (this.state.history.length - 1) - this.state.stepNumber;
+        const activeMove = this.state.isAscending ? move : (this.state.history.length - 1) - move;
 
         // Bold if this is the active step.
         if (move == activeStep) {
           return (
             <li key={move}>
-              <button onClick={() => this.jumpTo(move)}><strong>{desc}</strong></button>
+              <button onClick={() => this.jumpTo(activeMove)}><strong>{desc}</strong></button>
             </li>
           );
         } else {
           return (
             <li key={move}>
-              <button onClick={() => this.jumpTo(move)}>{desc}</button>
+              <button onClick={() => this.jumpTo(activeMove)}>{desc}</button>
             </li>
           );
         }
